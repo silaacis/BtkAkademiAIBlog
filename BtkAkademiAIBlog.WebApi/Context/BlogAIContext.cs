@@ -1,9 +1,10 @@
 ﻿using BtkAkademiAIBlog.WebApi.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BtkAkademiAIBlog.WebApi.Context
 {
-    public class BlogAIContext : DbContext
+    public class BlogAIContext : IdentityDbContext<AppUser>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

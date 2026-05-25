@@ -30,5 +30,14 @@ namespace BtkAkademiAIBlog.WebApi.Controllers
             _context.SaveChanges(); 
             return Ok("Kategori başarıyla oluşturuldu.");
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCategory(int id)
+        {
+            var category = _context.Categories.Find(id);
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+            return Ok("Kategori başarıyla silindi.");
+        }
     }
 }

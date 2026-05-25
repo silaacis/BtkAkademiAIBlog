@@ -4,13 +4,13 @@
             <ul>
                 <li>
                     <div class="image-area">
-                        <a href="#"><img src="/images/LLM1.jpg" alt="image"></a>
+                        <a href="#"><img src="@ViewBag.LastTechnologyArticleFeatureImageUrl" alt="image"></a>
                         <div class="back-btm-content">
                             <a href="#" class="back-cate back-poli">Teknoloji</a>
-                            <h3><a href="#">Yapay Zeka Dünyasının Yeni Dil Modelleri</a></h3>
+                            <h3><a href="#">@ViewBag.LastTechnologyArticleTitle</a></h3>
                             <ul>
-                                <li class="back-author"><span><img src="/template/assets/images/author/1.jpg" alt="image"></span><a href="#">Yazar1 Yazar1</a></li>
-                                <li class="back-date"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>5 Ocak 2025</li>
+                                <li class="back-author"><span><img src="@ViewBag.LastTechnologyArticleImageUrl" alt="image"></span><a href="#">@ViewBag.LastTechnologyArticleAuthor</a></li>
+                                <li class="back-date"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>@ViewBag.LastTechnologyArticleCreatedDate.ToString("dd-MMM-yyyy")</li>
                                 <li class="back-comments"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>0 Yorum</li>
                             </ul>
                         </div>
@@ -22,12 +22,12 @@
             <ul class="back-pr-3">
                 <li>
                     <div class="image-area">
-                        <a href="#"><img src="/images/festival1.jpg" alt="image"></a>
+                        <a href="#"><img src="@ViewBag.LastTravelArticleFeatureImageUrl" alt="image" style="height:300px;width:300px"></a>
                         <div class="back-btm-content">
-                            <a href="#" class="back-cate back-tech">Technology</a>
-                            <h3><a href="#">Kültür Sanat Yolu Festivali Başladı!</a></h3>
+                            <a href="#" class="back-cate back-tech">Seyahat</a>
+                            <h3><a href="#">@ViewBag.LastTravelArticleTitle</a></h3>
                             <ul>
-                                <li class="back-author"><span><img src="/template/assets/images/author/3.jpg" alt="image"></span><a href="#">by Jon Deo</a></li>
+                                <li class="back-author"><span><img src="@ViewBag.LastTravelArticleImageUrl" alt="image"></span><a href="#">@ViewBag.LastTravelArticleAuthor</a></li>
                             </ul>
                         </div>
                     </div>
@@ -38,12 +38,12 @@
             <ul class="back-pl-3">
                 <li>
                     <div class="image-area">
-                        <a href="#"><img src="/images/castle1.jpg" alt="image"></a>
+                        <a href="#"><img src="@ViewBag.LastSportsArticleFeatureImageUrl" style="height:300px;width:300px";" alt="image"></a>
                         <div class="back-btm-content">
-                            <a href="#" class="back-cate back-tra">Travel</a>
-                            <h3><a href="#">Almanya Kalelerine Büyüleyici Yolculuk</a></h3>
+                            <a href="#" class="back-cate back-tra">Spor</a>
+                            <h3><a href="#">@ViewBag.LastSportsArticleTitle</a></h3>
                             <ul>
-                                <li class="back-author"><span><img src="/template/assets/images/author/2.jpg" alt="image"></span><a href="#">by Jon Deo</a></li>
+                                <li class="back-author"><span><img src="@ViewBag.LastSportsArticleImageUrl" alt="image"></span><a href="#">@ViewBag.LastSportsArticleAuthor</a></li>
                             </ul>
                         </div>
                     </div>

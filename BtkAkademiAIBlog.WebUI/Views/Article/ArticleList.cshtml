@@ -1,0 +1,58 @@
+﻿@model List<ResultArticleDto>
+@{
+    ViewData["Title"] = "ArticleList";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="back-wrapper">
+    <div class="back-breadcrumbs">
+        <div class="breadcrumbs-wrap">
+            <div class="breadcrumbs-inner">
+                <div class="container">
+                    <div class="breadcrumbs-text">
+                        <h1 class="breadcrumbs-title">Makale Listesi</h1>
+                        <div class="back-nav">
+                            <ul>
+                                <li><a href="/Default/Index">Anasayfa</a></li>
+                                <li>Tüm Makaleler</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="back-category-style-grid pt-70 pb-70">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                <div class="col-lg-4">
+                    <div class="image-areas">
+                        <a href="#"><img src="@item.CoverImageUrl" alt="image" style="width:600px;height:250px;"></a>
+                    </div>
+                    <div class="back-btm-content">
+                        <a href="#" class="back-cates">Kategori Adı: @item.CategoryName</a>
+                        <h3><a href="#">@item.Title</a></h3>
+                        <ul>
+                            <li class="back-author">Yazar: <a href="#">Adı Soyadı</a></li>
+                            <li class="back-date"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>@item.CreatedDate.ToString("dd-MMM-yyyy")</li>
+                        </ul>
+                        <p>@item.Content.Substring(0,100)...</p>
+                    </div>
+                    </div>
+                }
+
+            </div>
+            <!--================= Back Pagination Start Here =================-->
+            <ul class="back-pagination mt-30">
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li class="back-next"><a href="#">Sonraki<i class="arrow_carrot-right"></i></a></li>
+            </ul>
+            <!--================= Back Pagination End Here =================-->
+        </div>
+    </div>
+    <!--================= Back Trending Stories End Here =================-->
+</div>     
