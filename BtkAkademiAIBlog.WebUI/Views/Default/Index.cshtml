@@ -1,0 +1,56 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+    @await Component.InvokeAsync("_LayoutHeadComponentPartial")
+    <body> 
+        
+        @await Component.InvokeAsync("_LayoutRightSideBarComponentPartial")
+
+        
+        <header id="back-header" class="back-header">
+            
+            @await Component.InvokeAsync("_LayoutHeaderComponentPartial")
+            
+            @await Component.InvokeAsync("_LayoutNavBarComponentPartial")
+        </header>
+       
+        <!--================= Back Wrapper Start Here =================-->
+        <div class="back-wrapper">
+            <!--================= Back Hero Start Here =================-->
+            <div class="back-hero-area md-mt-40">
+                <div class="container">
+                    <div class="row">
+                    @await Component.InvokeAsync("_DefaultSliderComponentPartial")
+                    @await Component.InvokeAsync("_DefaultFeatureComponentPartial")
+                        
+                    </div>
+
+                @await Component.InvokeAsync("_DefaultGetCategoriesWithLastArticleComponentPartial")
+                         
+                </div>
+            </div>
+
+        @await Component.InvokeAsync("_DefaultTrendingStoriesArticlesComponentPartial")
+
+        @await Component.InvokeAsync("_DefaultLatestPostsComponentPartial")
+
+        @await Component.InvokeAsync("_SubFeatureComponentPartial")
+
+        @await Component.InvokeAsync("_DefaultTradingVideoComponentPartial")
+
+        @await Component.InvokeAsync("_SecondFeaturePostComponentPartial")
+
+        @await Component.InvokeAsync("_DefaultSubSliderComponentPartial")
+
+        </div>        
+
+    @await Component.InvokeAsync("_LayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_LayoutScriptsComponentPartial")
+        
+    </body>
+</html>

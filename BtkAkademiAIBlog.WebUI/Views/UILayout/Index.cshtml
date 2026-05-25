@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+    @await Component.InvokeAsync("_LayoutHeadComponentPartial")
+<body>
+
+    @await Component.InvokeAsync("_LayoutRightSideBarComponentPartial")
+
+
+    <header id="back-header" class="back-header">
+
+        @await Component.InvokeAsync("_LayoutHeaderComponentPartial")
+
+        @await Component.InvokeAsync("_LayoutNavBarComponentPartial")
+    </header>
+
+    @RenderBody()
+
+    @await Component.InvokeAsync("_LayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_LayoutScriptsComponentPartial")
+
+</body>
+</html>
