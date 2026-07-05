@@ -1,0 +1,64 @@
+﻿@model List<ResultUserDto>
+@{
+    ViewData["Title"] = "UserList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content">
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Kullanıcılar</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Kullanıcı Listesi</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive mt-3">
+                <table class="table align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>Ad Soyad</th>
+                            <th>Unvan</th>
+                            <th>Email</th>
+                            <th>Sil</th>
+                            <th>Güncelle</th>
+                            <th>Detaylar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Name @item.Surname</td>
+                                <td>@item.Title</td>
+                                <td>@item.Email</td>
+                                <td><a href="/User/DeleteUser/@item.Id" class="btn btn-danger">Sil</a></td>
+                                <td><a href="/User/UpdateUser/@item.Id" class="btn btn-success">Güncelle</a></td>
+                                <td><a href="/User/DetailsUser/@item.Id" class="btn btn-warning">Detaylar</a></td>
+
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <a href="/User/CreateUser/" class="btn btn-info">Yeni Kullanıcı Girişi</a>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+

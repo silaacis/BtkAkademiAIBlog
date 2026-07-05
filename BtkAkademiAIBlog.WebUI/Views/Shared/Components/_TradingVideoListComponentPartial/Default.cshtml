@@ -1,0 +1,20 @@
+﻿@model List<ResultTradingVideoDto>
+
+<div class="col-lg-4 pl-30 md-pt-40">
+    <ul class="back-hero-bottom">
+        @foreach (var item in Model)
+        {
+            <li>
+                <div class="image-areas">
+                    <a href="#"><img src="@item.ThumbnailImageUrl" alt="image"></a>
+                    <a href="@item.EmbedVideoUrl" class="popup-videos back-video"><i class="fa-solid fa-play"></i></a>
+                </div>
+                <div class="back-btm-content">
+                    <a href="#" class="back-cates">Kategori</a>
+                    <h3><a href="#">@item.Title</a></h3>
+                </div>
+            </li>
+        }
+
+    </ul>
+</div>

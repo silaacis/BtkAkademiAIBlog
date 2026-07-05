@@ -1,6 +1,7 @@
 ﻿using BtkAkademiAIBlog.WebUI.Dtos.ArticleDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BtkAkademiAIBlog.WebUI.ViewComponents.DefaultComponents
 {
@@ -25,6 +26,8 @@ namespace BtkAkademiAIBlog.WebUI.ViewComponents.DefaultComponents
                 ViewBag.LastTechnologyArticleTitle = values.Title;
                 ViewBag.LastTechnologyArticleFeatureImageUrl = values.FeatureImageUrl;
                 ViewBag.LastTechnologyArticleCreatedDate = values.CreatedDate;
+                ViewBag.LastTechnologyArticleAuthor = values.Name + " " + values.Surname;
+                ViewBag.LastTechnologyArticleImageUrl = values.ImageUrl;
             }
             #endregion
 
@@ -38,6 +41,8 @@ namespace BtkAkademiAIBlog.WebUI.ViewComponents.DefaultComponents
                 var values2 = JsonConvert.DeserializeObject<ResultArticleDto>(jsonData2);
                 ViewBag.LastTravelArticleTitle = values2.Title;
                 ViewBag.LastTravelArticleFeatureImageUrl = values2.FeatureImageUrl;
+                ViewBag.LastTravelArticleAuthor = values2.Name + " " + values2.Surname;
+                ViewBag.LastTravelArticleImageUrl = values2.ImageUrl;
             }
             #endregion
 
@@ -50,8 +55,9 @@ namespace BtkAkademiAIBlog.WebUI.ViewComponents.DefaultComponents
                 var jsonData3 = await responseMessage3.Content.ReadAsStringAsync();
                 var values3 = JsonConvert.DeserializeObject<ResultArticleDto>(jsonData3);
                 ViewBag.LastSportsArticleTitle = values3.Title;
-                ViewBag.LastSportsArticleFeatureImageUrl = values3.FeatureImageUrl;
-                return View();
+              ViewBag.LastSportsArticleFeatureImageUrl = values3.FeatureImageUrl;
+                ViewBag.LastSportsArticleAuthor = values3.Name + " " + values3.Surname;
+                ViewBag.LastSportsArticleImageUrl = values3.ImageUrl;
             }
             #endregion
 

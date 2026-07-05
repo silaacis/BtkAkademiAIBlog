@@ -10,5 +10,7 @@ namespace BtkAkademiAIBlog.WebApi.Entities
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public List<Article> Articles { get; set; }
+        public List<TradingVideo> TradingVideos { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

@@ -15,6 +15,13 @@
         public string? FeatureImageUrl { get; set; }
         public string? AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+        public string? SliderCategoryImageUrl { get; set; }
+        public bool? IsTrendingStories { get; set; }
+        public bool IsLastArticle { get; set; }
+        public string? LastArticleImageUrl { get; set; }
+        public string? Image300x300Url { get; set; }
+        public List<Comment> Comments { get; set; }
+
 
     }
 }

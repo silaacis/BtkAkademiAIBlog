@@ -15,5 +15,8 @@ namespace BtkAkademiAIBlog.WebApi.Dtos.ArticleDtos
         public bool IsFeatureSlider { get; set; }
         public string FeatureSliderImageUrl { get; set; }
         public string FeatureImageUrl { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

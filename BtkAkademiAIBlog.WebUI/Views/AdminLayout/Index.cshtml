@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en" class="minimal-theme">
+    @await Component.InvokeAsync("_AdminHeadComponentPartial")
+<body>
+    <div class="wrapper">
+        @await Component.InvokeAsync("_AdminNavbarComponentPartial")
+        @await Component.InvokeAsync("_AdminSidebarComponentPartial")
+        @RenderBody()
+        @await Component.InvokeAsync("_AdminSwitcherComponentPartial")
+    </div>
+    @await Component.InvokeAsync("_AdminScriptsComponentPartial")
+</body>
+</html>

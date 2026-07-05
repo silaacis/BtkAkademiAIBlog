@@ -159,11 +159,26 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
                     b.Property<string>("FeatureSliderImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image300x300Url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsFeatureSlider")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLastArticle")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsTrendingStories")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastArticleImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MainImageUrl")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderCategoryImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -194,6 +209,44 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommentDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsConfirm")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.Contact", b =>
@@ -270,12 +323,24 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TradingVideoId"), 1L, 1);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmbedVideoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FeatureImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFeature")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ThumbnailImageUrl")
                         .IsRequired()
@@ -286,6 +351,10 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TradingVideoId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("TradingVideos");
                 });
@@ -438,6 +507,40 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.Comment", b =>
+                {
+                    b.HasOne("BtkAkademiAIBlog.WebApi.Entities.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BtkAkademiAIBlog.WebApi.Entities.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.TradingVideo", b =>
+                {
+                    b.HasOne("BtkAkademiAIBlog.WebApi.Entities.AppUser", "AppUser")
+                        .WithMany("TradingVideos")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("BtkAkademiAIBlog.WebApi.Entities.Category", "Category")
+                        .WithMany("TradingVideos")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -492,11 +595,22 @@ namespace BtkAkademiAIBlog.WebApi.Migrations
             modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.AppUser", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("TradingVideos");
+                });
+
+            modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.Article", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BtkAkademiAIBlog.WebApi.Entities.Category", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("TradingVideos");
                 });
 #pragma warning restore 612, 618
         }
