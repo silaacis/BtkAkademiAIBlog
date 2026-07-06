@@ -16,6 +16,11 @@ namespace BtkAkademiAIBlog.WebApi.Mapping
                 .ForMember(dest=>dest.Surname,opt=>opt.MapFrom(src=>src.AppUser.Surname))
                 .ForMember(dest=>dest.ImageUrl,opt=>opt.MapFrom(src=>src.AppUser.ImageUrl));
 
+            CreateMap<Comment, ResultCommentWithArticleAndAuthorDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Article.Title))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.AppUser.Name))
+                .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.AppUser.Surname));
+
             CreateMap<Article, ResultLastTechnologyArticleDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.AppUser.Name))
                 .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.AppUser.Surname))
@@ -42,7 +47,6 @@ namespace BtkAkademiAIBlog.WebApi.Mapping
             CreateMap<Comment,UpdateCommentDto>().ReverseMap();
             CreateMap<Comment,GetCommentByIdDto>().ReverseMap();
             CreateMap<Comment,ResultCommentDto>().ReverseMap();
-
 
         }
     }

@@ -1,0 +1,179 @@
+﻿@using Microsoft.AspNetCore.Html
+@using System.Globalization
+@model List<ResultCommentDto>
+
+@{
+    ViewData["Title"] = "CommentList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+@functions {
+    public IHtmlContent RenderStars(decimal rating)
+    {
+        int fullStars = (int)Math.Floor(rating);
+        bool halfStar = rating - fullStars >= 0.5m;
+
+        string html = "";
+
+        for (int i = 0; i < fullStars; i++)
+            html += "<i class='bi bi-star-fill text-warning'></i>";
+
+        if (halfStar)
+            html += "<i class='bi bi-star-half text-warning'></i>";
+
+        for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+            html += "<i class='bi bi-star text-muted'></i>";
+
+        return new HtmlString(html);
+    }
+}
+
+<main class="page-content">
+
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Yorumlar</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="#"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">Yorum Listesi</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">Yorum Listesi</h5>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Makale</th>
+                            <th>Kullanıcı</th>
+                            <th>Tarih</th>
+                            <th>Puan</th>
+                            <th>Yorum</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            count++;
+
+                            <tr>
+                                <td>@count</td>
+
+                                <td>
+                                    <strong>@item.Title</strong>
+                                </td>
+
+                                <td>
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    @item.Name @item.Surname
+                                </td>
+
+                                <td class="text-muted">
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    @item.CommentDate.ToString("dd MMM yyyy")
+                                </td>
+
+                                <td>
+                                    @RenderStars(item.Rating)
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#commentModal"
+                                            data-title="@item.Title"
+                                            data-user="@item.Name @item.Surname"
+                                            data-date="@item.CommentDate.ToString("dd MMM yyyy")"
+                                            data-comment="@item.CommentDetail"
+                                            data-rating="@item.Rating.ToString(CultureInfo.InvariantCulture)">
+                                        <i class="bi bi-eye-fill"></i> Yorumu Gör
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<div class="modal fade" id="commentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-chat-left-text"></i> Yorum Detayı
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p><strong>Makale:</strong> <span id="modalTitle"></span></p>
+                <p><strong>Kullanıcı:</strong> <span id="modalUser"></span></p>
+                <p><strong>Tarih:</strong> <span id="modalDate"></span></p>
+
+                <hr />
+
+                <p class="fw-bold mb-1">Yorum:</p>
+                <div class="p-3 bg-light rounded" id="modalComment"></div>
+
+                <hr />
+
+                <p class="fw-bold mb-1">Değerlendirme:</p>
+                <div id="modalStars"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var commentModal = document.getElementById('commentModal');
+
+    commentModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+
+        document.getElementById('modalTitle').innerText = button.getAttribute('data-title');
+        document.getElementById('modalUser').innerText = button.getAttribute('data-user');
+        document.getElementById('modalDate').innerText = button.getAttribute('data-date');
+        document.getElementById('modalComment').innerText = button.getAttribute('data-comment');
+
+        var ratingText = button.getAttribute('data-rating');
+        var rating = parseFloat(ratingText.replace(',', '.'));
+
+        var fullStars = Math.floor(rating);
+        var halfStar = rating - fullStars >= 0.5;
+
+        var starsHtml = "";
+
+        for (let i = 0; i < fullStars; i++) {
+            starsHtml += "<i class='bi bi-star-fill text-warning'></i>";
+        }
+
+        if (halfStar) {
+            starsHtml += "<i class='bi bi-star-half text-warning'></i>";
+        }
+
+        for (let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) {
+            starsHtml += "<i class='bi bi-star text-muted'></i>";
+        }
+
+        document.getElementById('modalStars').innerHTML = starsHtml;
+    });
+</script>

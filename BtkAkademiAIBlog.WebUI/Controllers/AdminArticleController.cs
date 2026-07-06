@@ -1,5 +1,6 @@
 ﻿using BtkAkademiAIBlog.WebUI.Dtos.ArticleDtos;
 using BtkAkademiAIBlog.WebUI.Dtos.CategoryDtos;
+using BtkAkademiAIBlog.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -10,9 +11,15 @@ namespace BtkAkademiAIBlog.WebUI.Controllers
     public class AdminArticleController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public AdminArticleController(IHttpClientFactory httpClientFactory)
+        private readonly IConfiguration _configuration;
+        private readonly OpenAIArticleService _openAIArticleService;
+        private readonly OpenAIArticleTitleService _openAIArticleTitleService;
+        public AdminArticleController(IHttpClientFactory httpClientFactory, IConfiguration configuration, OpenAIArticleService openAIArticleService, OpenAIArticleTitleService openAIArticleTitleService)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
+            _openAIArticleService = openAIArticleService;
+            _openAIArticleTitleService = openAIArticleTitleService;
         }
         public async Task<IActionResult> ArticleList()
         {
@@ -97,5 +104,43 @@ namespace BtkAkademiAIBlog.WebUI.Controllers
             await client.PutAsync("https://localhost:7076/api/Articles", stringContent);
             return RedirectToAction("ArticleList");
         }
+
+        [HttpGet]
+        public IActionResult CreateArticleWithOpenAI()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateArticleWithOpenAI(string topic)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+            {
+                ViewBag.Error = "Lütfen bir konu girin.";
+                return View();
+            }
+            ViewBag.Article = await _openAIArticleService.GenerateArticleAsync(topic);
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult CreateArticleTitleWithOpenAI()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateArticleTitleWithOpenAI(string topic)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+            {
+                ViewBag.Error = "Lütfen anahtar kelime girin.";
+                return View();
+            }
+            ViewBag.ArticleTitle = await _openAIArticleTitleService.GenerateArticleTitleAsync(topic);
+            return View();
+        }
+
     }
 }

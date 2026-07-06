@@ -1,6 +1,8 @@
-﻿namespace BtkAkademiAIBlog.WebUI.Dtos.CommentDtos
+﻿using BtkAkademiAIBlog.WebApi.Entities;
+
+namespace BtkAkademiAIBlog.WebApi.Dtos.CommentDtos
 {
-    public class ResultCommentDto
+    public class ResultCommentWithArticleAndAuthorDto
     {
         public int CommentId { get; set; }
         public string AppUserId { get; set; }

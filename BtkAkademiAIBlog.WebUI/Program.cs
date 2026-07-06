@@ -1,9 +1,14 @@
+using BtkAkademiAIBlog.WebUI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<OpenAIArticleService>();
+builder.Services.AddScoped<OpenAIArticleTitleService>();
 builder.Services.AddControllersWithViews();
- 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,5 +29,13 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.Run();

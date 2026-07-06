@@ -1,66 +1,187 @@
 ﻿@model List<ResultArticleDto>
+
 @{
     ViewData["Title"] = "ArticleList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<style>
+    .action-btn {
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all .2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-delete {
+        background-color: #fdecea;
+        color: #d93025;
+        border: 1px solid #f5c6cb;
+    }
+
+        .btn-delete:hover {
+            background-color: #f5c6cb;
+        }
+
+    .btn-edit {
+        background-color: #e6f4ea;
+        color: #137333;
+        border: 1px solid #b7dfc2;
+    }
+
+        .btn-edit:hover {
+            background-color: #b7dfc2;
+        }
+
+    .btn-view {
+        background-color: #fff7e6;
+        color: #b45309;
+        border: 1px solid #ffe0b2;
+    }
+
+        .btn-view:hover {
+            background-color: #ffe0b2;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .badge-category {
+        background-color: #eef2ff;
+        color: #4338ca;
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .text-muted small {
+        font-size: 12px;
+    }
+</style>
+
 <main class="page-content">
-    <!--breadcrumb-->
+
+    <!-- breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Makaleler & Bloglar</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
-                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                        <a href="#"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Makale Listesi</li>
+                    <li class="breadcrumb-item active">Makale Listesi</li>
                 </ol>
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
 
-    <div class="card">
+    <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body">
-            <div class="table-responsive mt-3">
-                <table class="table align-middle">
-                    <thead class="table-secondary">
+
+            <div class="d-flex align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Makale Listesi</h5>
+
+                <a href="/AdminArticle/CreateArticle/"
+                   class="btn btn-primary ms-auto d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    Yeni Makale
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
                         <tr>
                             <th>#</th>
                             <th>Başlık</th>
                             <th>Tarih</th>
-                            <th>Kategori Adı</th>
+                            <th>Kategori</th>
                             <th>Yazar</th>
                             <th>Sil</th>
                             <th>Güncelle</th>
                             <th>Sitede Gör</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
                                 <td>@item.ArticleId</td>
-                                <td>@item.Title</td>
-                                <td>@item.CreatedDate.ToString("dd-MMM-yyyy")</td>
-                                <td>@item.CategoryName</td>
-                                <td>@item.Name @item.Surname</td>
 
-                                <td><a href="/AdminArticle/DeleteArticle/@item.ArticleId" class="btn btn-danger">Sil</a></td>
-                                <td><a href="/AdminArticle/UpdateArticle/@item.ArticleId" class="btn btn-success">Güncelle</a></td>
-                                <td><a href="/Article/ArticleDetail/@item.ArticleId" class="btn btn-warning">Sitede Gör</a></td>
+                                <td>
+                                    <strong>@item.Title</strong>
+                                </td>
 
+                                <td class="text-muted">
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    @item.CreatedDate.ToString("dd MMM yyyy")
+                                </td>
+
+                                <td>
+                                    <span class="badge-category">
+                                        <i class="
+                bi
+                @(item.CategoryName switch
+                                           {
+                                               "Teknoloji" => "bi-cpu",
+                                               "Spor" => "bi-dribbble",
+                                               "Sanat" => "bi-palette",
+                                               "Film & Dizi" => "bi-film",
+                                               "Finans" => "bi-cash-stack",
+                                               "Günlük Yaşam" => "bi-house-heart",
+                                               "Yeme & İçme" => "bi-cup-hot",
+                                               "Sağlık" => "bi-heart-pulse",
+                                               "Seyahat" => "bi-airplane",
+                                               _ => "bi-folder2-open"
+                                           })
+        me-1"></i>
+
+                                        @item.CategoryName
+                                    </span>
+                                </td>
+
+
+                                <td>
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    @item.Name @item.Surname
+                                </td>
+
+                                <td>
+                                    <a href="/AdminArticle/DeleteArticle/@item.ArticleId"
+                                       class="action-btn btn-delete">
+                                        <i class="bi bi-trash-fill"></i> Sil
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="/AdminArticle/UpdateArticle/@item.ArticleId"
+                                       class="action-btn btn-edit">
+                                        <i class="bi bi-pencil-fill"></i> Güncelle
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="/Article/ArticleDetail/@item.ArticleId"
+                                       class="action-btn btn-view">
+                                        <i class="bi bi-box-arrow-up-right"></i> Gör
+                                    </a>
+                                </td>
                             </tr>
                         }
-
                     </tbody>
                 </table>
-                <a href="/AdminArticle/CreateArticle/" class="btn btn-info">Yeni Makale Girişi</a>
             </div>
+
         </div>
     </div>
 
-
 </main>
-

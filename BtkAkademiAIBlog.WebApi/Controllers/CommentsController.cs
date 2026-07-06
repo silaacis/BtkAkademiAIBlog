@@ -3,6 +3,7 @@ using BtkAkademiAIBlog.WebApi.Context;
 using BtkAkademiAIBlog.WebApi.Dtos.CommentDtos;
 using BtkAkademiAIBlog.WebApi.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BtkAkademiAIBlog.WebApi.Controllers
 {
@@ -58,6 +59,19 @@ namespace BtkAkademiAIBlog.WebApi.Controllers
             _context.Comments.Update(value);
             _context.SaveChanges();
             return Ok("Yorum Güncelleme İşlemi Başarılı");
+        }
+
+        [HttpGet("CommentListWithArticleAndAuthor")]
+        public IActionResult CommentListWithArticleAndAuthor()
+        {
+            var values = _context.Comments
+                .Include(x=>x.Article)
+                .Include(y=>y.AppUser)
+                .ToList();
+
+            var dtoValues = _mapper.Map<List<ResultCommentWithArticleAndAuthorDto>>(values);
+
+            return Ok(dtoValues);
         }
     }
 }

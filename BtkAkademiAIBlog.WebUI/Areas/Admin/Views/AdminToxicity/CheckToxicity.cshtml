@@ -1,0 +1,221 @@
+﻿@{
+    ViewData["Title"] = "CheckToxicity";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-shield-alt"></i> BERT Toksiklik Analizi
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="CommentText" class="form-label">Analiz Edilecek Metin:</label>
+                                <textarea class="form-control" id="CommentText" name="CommentText"
+                                          rows="5" placeholder="Analiz edilmesini istediğiniz metni buraya yazın..."
+                                          required>@ViewBag.OriginalText</textarea>
+                                <small class="text-muted">
+                                    Model: unitary/toxic-bert (BERT tabanlı toksiklik tespit modeli)
+                                </small>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Analiz Et
+                            </button>
+                        </form>
+
+                        @if (ViewBag.Success == true)
+                        {
+                            <hr class="my-4" />
+
+                            <div class="alert alert-@ViewBag.LevelColor" role="alert">
+                                <h5 class="alert-heading">
+                                    <i class="fas fa-exclamation-triangle"></i> Analiz Sonucu
+                                </h5>
+                                <p class="mb-0">
+                                    <strong>Toksiklik Seviyesi:</strong> @ViewBag.ToxicityLevel
+                                    <span class="badge bg-@ViewBag.LevelColor">@ViewBag.MaxLabel</span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Genel Skor:</strong> %@Math.Round(ViewBag.MaxScore * 100, 2)
+                                </p>
+                            </div>
+
+                            <div class="card mt-3">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="mb-0">Detaylı Analiz Skorları</h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Toxic -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-radiation"></i> <strong>Toksik (Toxic):</strong></span>
+                                            <span class="badge bg-primary">%@ViewBag.ToxicPercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: @ViewBag.ToxicPercent%"
+                                                 aria-valuenow="@ViewBag.ToxicPercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.ToxicPercent%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Severe Toxic -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-skull-crossbones"></i> <strong>Ağır Toksik (Severe Toxic):</strong></span>
+                                            <span class="badge bg-danger">%@ViewBag.SevereToxicPercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                 style="width: @ViewBag.SevereToxicPercent%"
+                                                 aria-valuenow="@ViewBag.SevereToxicPercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.SevereToxicPercent%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Obscene -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-ban"></i> <strong>Müstehcen (Obscene):</strong></span>
+                                            <span class="badge bg-warning text-dark">%@ViewBag.ObscenePercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 style="width: @ViewBag.ObscenePercent%"
+                                                 aria-valuenow="@ViewBag.ObscenePercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.ObscenePercent%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Threat -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-fist-raised"></i> <strong>Tehdit (Threat):</strong></span>
+                                            <span class="badge bg-danger">%@ViewBag.ThreatPercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                 style="width: @ViewBag.ThreatPercent%"
+                                                 aria-valuenow="@ViewBag.ThreatPercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.ThreatPercent%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Insult -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-angry"></i> <strong>Hakaret (Insult):</strong></span>
+                                            <span class="badge bg-warning text-dark">%@ViewBag.InsultPercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 style="width: @ViewBag.InsultPercent%"
+                                                 aria-valuenow="@ViewBag.InsultPercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.InsultPercent%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Identity Hate -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-user-slash"></i> <strong>Kimlik Nefreti (Identity Hate):</strong></span>
+                                            <span class="badge bg-danger">%@ViewBag.IdentityHatePercent</span>
+                                        </div>
+                                        <div class="progress" style="height: 25px;">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                 style="width: @ViewBag.IdentityHatePercent%"
+                                                 aria-valuenow="@ViewBag.IdentityHatePercent"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                @ViewBag.IdentityHatePercent%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <div class="card">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0">Analiz Edilen Metin</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-0">@ViewBag.OriginalText</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    Model: @ViewBag.Model |
+                                    Skorlar 0 (temiz) ile 1 (toksik) arasında değişir.
+                                </small>
+                            </div>
+                        }
+
+                        @if (ViewBag.Success == false)
+                        {
+                            <hr class="my-4" />
+                            <div class="alert alert-danger" role="alert">
+                                <h5 class="alert-heading">
+                                    <i class="fas fa-exclamation-circle"></i> Hata!
+                                </h5>
+                                <p><strong>@ViewBag.Error</strong></p>
+                                @if (!string.IsNullOrEmpty(ViewBag.Message))
+                                {
+                                    <p class="mb-0">Mesaj: @ViewBag.Message</p>
+                                }
+                                @if (!string.IsNullOrEmpty(ViewBag.Details))
+                                {
+                                    <hr />
+                                    <details>
+                                        <summary>Detaylar</summary>
+                                        <pre class="mt-2">@ViewBag.Details</pre>
+                                    </details>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Bilgilendirme -->
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-lightbulb"></i> Model Hakkında</h6>
+                        <p class="card-text small">
+                            <strong>unitary/toxic-bert</strong> modeli, metin içerisindeki toksik içeriği tespit etmek için
+                            eğitilmiş bir BERT modelidir. Model 6 farklı kategoride analiz yapar:
+                        </p>
+                        <ul class="small">
+                            <li><strong>Toxic:</strong> Genel toksik içerik</li>
+                            <li><strong>Severe Toxic:</strong> Çok ağır toksik içerik</li>
+                            <li><strong>Obscene:</strong> Müstehcen içerik</li>
+                            <li><strong>Threat:</strong> Tehdit içeren ifadeler</li>
+                            <li><strong>Insult:</strong> Hakaret içeren ifadeler</li>
+                            <li><strong>Identity Hate:</strong> Kimlik tabanlı nefret söylemi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome (ikonlar için) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</main>

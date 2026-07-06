@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "CreateComment";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<main class="page-content">
+    <!-- Breadcrumb -->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Yorumlar</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="#"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">Yorum Çeviri</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">AI ile Metin Çevirisi</h5>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Çevrilecek Türkçe Metin</label>
+                    <textarea name="CommentDetail" class="form-control" rows="4" placeholder="Türkçe metninizi buraya yazın...">@ViewBag.OriginalText</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bx bx-world me-1"></i>Metni AI ile Çevir
+                </button>
+                <a href="@Url.Action("CreateComment")" class="btn btn-secondary">
+                    <i class="bx bx-reset me-1"></i>Temizle
+                </a>
+            </form>
+
+            <!-- Başarılı Sonuç Alanı -->
+            @if (ViewBag.Success == true)
+            {
+                <div class="mt-4">
+                    <hr />
+                    <div class="alert alert-success">
+                        <h6 class="fw-bold">
+                            <i class="bx bx-check-circle me-1"></i>Çeviri Başarılı
+                        </h6>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Orijinal Metin (Türkçe):</label>
+                                <div class="p-3 bg-light rounded border">
+                                    <p class="mb-0">@ViewBag.OriginalText</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Çevrilmiş Metin (İngilizce):</label>
+                                <div class="p-3 bg-primary bg-opacity-10 rounded border border-primary">
+                                    <p class="mb-0 text-success fw-bold">@ViewBag.TranslatedText</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <small>
+                            <strong>Model:</strong> @ViewBag.Model<br />
+                            <strong>Durum Kodu:</strong> @ViewBag.StatusCode
+                        </small>
+                    </div>
+                </div>
+            }
+
+            <!-- Hata Durumu -->
+            @if (ViewBag.Success == false)
+            {
+                <div class="mt-4">
+                    <hr />
+                    <div class="alert alert-danger">
+                        <h6 class="fw-bold">
+                            <i class="bx bx-error-circle me-1"></i>Hata Oluştu
+                        </h6>
+                        <p class="mb-1"><strong>Hata:</strong> @ViewBag.Error</p>
+                        @if (ViewBag.Details != null)
+                        {
+                            <small class="text-muted">Detay: @ViewBag.Details</small>
+                        }
+                        @if (ViewBag.Message != null)
+                        {
+                            <small class="text-muted">Mesaj: @ViewBag.Message</small>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
