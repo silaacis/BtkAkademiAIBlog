@@ -1,0 +1,273 @@
+﻿@using BtkAkademiAIBlog.WebUI.Areas.Admin.Models
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding-top: 30px;
+        }
+
+            .header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .header p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+            }
+
+        .search-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 10px;
+                font-size: 1.1rem;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+        .btn-search {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            width: 100%;
+        }
+
+            .btn-search:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-search:active {
+                transform: translateY(0);
+            }
+
+        .error-box {
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #c33;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+            .answer-box h2 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+            }
+
+                .answer-box h2::before {
+                    content: "💡";
+                    margin-right: 10px;
+                    font-size: 1.8rem;
+                }
+
+            .answer-box p {
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+
+        .sources-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .source-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .source-card:hover {
+                transform: translateX(5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+            .source-card h3 {
+                color: #667eea;
+                margin-bottom: 10px;
+                font-size: 1.2rem;
+            }
+
+            .source-card a {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 500;
+                word-break: break-all;
+            }
+
+                .source-card a:hover {
+                    text-decoration: underline;
+                }
+
+            .source-card p {
+                color: #555;
+                line-height: 1.6;
+                margin-top: 10px;
+            }
+
+        .score-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 1.1rem;
+        }
+    </style>
+        <div class="container">
+            <div class="header">
+                <h1>🔍 Tavily AI Arama Motoru</h1>
+                <p>Sorunuzu girin ve yapay zeka destekli arama sonuçlarını görün</p>
+            </div>
+
+            <div class="search-box">
+                <form method="post">
+                    @Html.AntiForgeryToken()
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="error-box">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label for="query">Arama Sorgunuz:</label>
+                        <input type="text"
+                               id="query"
+                               name="query"
+                               class="form-control"
+                               placeholder="Örn: Yapay zekanın geleceği hakkında ne düşünüyorsun?"
+                               value="@ViewBag.Query"
+                               autofocus
+                               required />
+                    </div>
+
+                    <button type="submit" class="btn-search">🚀 Ara</button>
+                </form>
+            </div>
+
+            @if (ViewBag.SearchCompleted == true)
+            {
+                <div class="results-section">
+                    <div class="answer-box">
+                        <h2>AI Cevabı</h2>
+                        <p>@ViewBag.Answer</p>
+                    </div>
+
+                    @if (ViewBag.Results != null)
+                    {
+                        var results = ViewBag.Results as List<TavilyResult>;
+                        if (results != null && results.Count > 0)
+                        {
+                            <h3 class="sources-title">📚 Kaynak ve Detaylar</h3>
+
+                            @foreach (var result in results)
+                            {
+                                <div class="source-card">
+                                    <h3>@result.Title</h3>
+                                    <a href="@result.Url" target="_blank">@result.Url</a>
+                                    <p>@result.Content</p>
+                                    <span class="score-badge">Skor: @result.Score.ToString("F2")</span>
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="no-results">
+                            <p>Kaynak bulunamadı.</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+</main>
